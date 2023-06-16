@@ -6,30 +6,31 @@ import { Button } from 'primereact/button';
 import { useHistory } from "react-router-dom";
 import { Dialog } from 'primereact/dialog';
 import { LoginComponent } from './components/Auth/LoginComponent';
+import { RegisterComponent } from './components/Auth/RegisterComponent';
 export const AppTopbar = (props) => {
     const auth = new AuthService();
-    const [visible,setVisible]=useState(false)
+    const [visible, setVisible] = useState(false)
+    const [visibleRegister, setVisibleRegister] = useState(false)
     console.log(props.isAuthenticated())
-    const history = new useHistory()
     const logout = () => {
-     
-        if (localStorage.getItem('AuthToken')) {
-            
-            auth.getLogout(localStorage.getItem('AuthToken'))
-            .then((res)=>{
-                localStorage.removeItem('AuthToken')
-                window.location.reload();
-                console.log(res)
-            })
 
+        if (localStorage.getItem('AuthToken')) {
+
+            auth.getLogout(localStorage.getItem('AuthToken'))
+                .then((res) => {
+                    console.log(res)
+                })
+                
+            }
+            localStorage.removeItem('AuthToken')
+            window.location.reload();
         }
-    }
     return (
         <div className="layout-topbar">
             <Link to="/" className="layout-topbar-logo">
-                <img src={props.layoutColorMode === 'light' ? 'assets/layout/images/logo-dark.svg' : 'assets/layout/images/logo-white.svg'} alt="logo" />
+                {/* <img src={props.layoutColorMode === 'light' ? 'assets/layout/images/logo-dark.svg' : 'assets/layout/images/logo-white.svg'} alt="logo" /> */}
 
-
+                <span>CVDIEZ</span>
             </Link>
             <button type="button" className="p-link  layout-menu-button layout-topbar-button" onClick={props.onToggleMenuClick}>
                 <i className="pi pi-bars" />
@@ -49,7 +50,7 @@ export const AppTopbar = (props) => {
                         </button>
                     </li>
                     <li>
-                        <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick}>
+                        <button className="p-link layout-topbar-button"  onClick={props.onMobileSubTopbarMenuClick}>
                             <i className="pi pi-user" />
                             <span>Profile</span>
                         </button>
@@ -63,20 +64,25 @@ export const AppTopbar = (props) => {
             {!props.isAuthenticated() &&
                 <ul className={classNames("layout-topbar-menu lg:flex origin-top", { 'layout-topbar-menu-mobile-active': props.mobileTopbarMenuActive })}>
                     <li>
-                    <Button label="Sing In" onClick={() => setVisible(true)} />
-                        
+
+                        <Button label="Iniciar Sesión" className="p-button-outlined mr-2 mb-2"  onClick={() => setVisible(true)}/>
                     </li>
+                
                     <li>
-                        <Button label="Register" raised />
+                       
+                        <Button label="Registrarse"  onClick={() => setVisibleRegister(true)} />
 
                     </li>
                 </ul>
             }
-        <Dialog visible={visible} onHide={() => setVisible(false)}>
-        <LoginComponent></LoginComponent>
-        </Dialog>
+            <Dialog visible={visible} onHide={() => setVisible(false)}>
+                <LoginComponent></LoginComponent>
+            </Dialog>
+            <Dialog visible={visibleRegister} onHide={() => setVisibleRegister(false)}>
+                <RegisterComponent></RegisterComponent>
+            </Dialog>
 
         </div>
-        
+
     );
 }

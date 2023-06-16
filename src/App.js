@@ -6,7 +6,7 @@ import { CSSTransition } from 'react-transition-group';
 import { AppTopbar } from './AppTopbar';
 import { AppFooter } from './AppFooter';
 import { AppMenu } from './AppMenu';
-import { AppConfig } from './AppConfig';
+
 import { LoginPage } from './pages/Auth/LoginPage';
 import { Dashboard } from './components/Dashboard';
 
@@ -16,10 +16,13 @@ import PrimeReact from 'primereact/api';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
-import 'prismjs/themes/prism-coy.css';
+
 import './layout/flags/flags.css';
 import './layout/layout.scss';
 import './App.scss';
+import BreadCrumbBar from './components/Partia/BreadCrumbBar';
+import { ButtonDemo } from './components/ButtonDemo';
+import { MiscDemo } from './components/MiscDemo';
 const isAuthenticated = () => {
     if (localStorage.getItem('AuthToken')) {
         return true;
@@ -51,22 +54,8 @@ const App = () => {
         }
     }, [mobileMenuActive]);
 
-    const onInputStyleChange = (inputStyle) => {
-        setInputStyle(inputStyle);
-    }
+  
 
-    const onRipple = (e) => {
-        PrimeReact.ripple = e.value;
-        setRipple(e.value)
-    }
-
-    const onLayoutModeChange = (mode) => {
-        setLayoutMode(mode)
-    }
-
-    const onColorModeChange = (mode) => {
-        setLayoutColorMode(mode)
-    }
 
     const onWrapperClick = (event) => {
         if (!menuClick) {
@@ -176,14 +165,14 @@ const App = () => {
             </div>
 
             <div className="layout-main-container">
+                <BreadCrumbBar></BreadCrumbBar>
                 <div className="layout-main">
                     <Route path="/" exact component={Dashboard} />
-
-                    <Route path="/login" exact component={LoginPage}>
-                        {isAuthenticated() ? <Redirect to="/" /> : <LoginPage />}
-                    </Route>
-                    
+                    <Route path="/button" exact component={ButtonDemo} />
+                    <Route path="/misc" exact component={MiscDemo} />
+                    {/* <Route path="/login" exact component={LoginPage}>{isAuthenticated() ? <Redirect to="/" /> : <LoginPage />}</Route> */}
                 </div>
+                hola
 
                 <AppFooter layoutColorMode={layoutColorMode} />
             </div>
