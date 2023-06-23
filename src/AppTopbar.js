@@ -1,30 +1,40 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import classNames from 'classnames';
-import { AuthService } from './service/AuthService';
-import { Button } from 'primereact/button';
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import classNames from "classnames";
+import { AuthService } from "./service/AuthService";
+import { Button } from "primereact/button";
 import { useHistory } from "react-router-dom";
-import { Dialog } from 'primereact/dialog';
-import { LoginComponent } from './components/Auth/LoginComponent';
-import { RegisterComponent } from './components/Auth/RegisterComponent';
+import { Dialog } from "primereact/dialog";
+import { LoginComponent } from "./components/Auth/LoginComponent";
+import { RegisterComponent } from "./components/Auth/RegisterComponent";
+
 export const AppTopbar = (props) => {
     const auth = new AuthService();
-    const [visible, setVisible] = useState(false)
-    const [visibleRegister, setVisibleRegister] = useState(false)
-    console.log(props.isAuthenticated())
-    const logout = () => {
+    const [visible, setVisible] = useState(false);
+    const [visibleRegister, setVisibleRegister] = useState(false);
 
-        if (localStorage.getItem('AuthToken')) {
-
-            auth.getLogout(localStorage.getItem('AuthToken'))
-                .then((res) => {
-                    console.log(res)
-                })
-                
-            }
-            localStorage.removeItem('AuthToken')
-            window.location.reload();
+    const location = useLocation();
+    useEffect(() => {
+        const path = location.pathname;
+        const parts = path.split("/");
+        const lastPart = parts[parts.length - 1];
+        console.log(lastPart);
+        if (lastPart === "login") {
+            setVisible(true);
         }
+        if (lastPart === "register") {
+            setVisibleRegister(true);
+        }
+    }, []);
+    const logout = () => {
+        if (localStorage.getItem("AuthToken")) {
+            auth.getLogout(localStorage.getItem("AuthToken")).then((res) => {
+                console.log(res);
+            });
+        }
+        localStorage.removeItem("AuthToken");
+        window.location.reload();
+    };
     return (
         <div className="layout-topbar">
             <Link to="/" className="layout-topbar-logo">
@@ -40,9 +50,8 @@ export const AppTopbar = (props) => {
                 <i className="pi pi-ellipsis-v" />
             </button>
 
-
-            {props.isAuthenticated() &&
-                <ul className={classNames("layout-topbar-menu lg:flex origin-top", { 'layout-topbar-menu-mobile-active': props.mobileTopbarMenuActive })}>
+            {props.isAuthenticated() && (
+                <ul className={classNames("layout-topbar-menu lg:flex origin-top", { "layout-topbar-menu-mobile-active": props.mobileTopbarMenuActive })}>
                     <li>
                         <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick}>
                             <i className="pi pi-cog" />
@@ -50,7 +59,7 @@ export const AppTopbar = (props) => {
                         </button>
                     </li>
                     <li>
-                        <button className="p-link layout-topbar-button"  onClick={props.onMobileSubTopbarMenuClick}>
+                        <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick}>
                             <i className="pi pi-user" />
                             <span>Profile</span>
                         </button>
@@ -60,29 +69,24 @@ export const AppTopbar = (props) => {
                         </button>
                     </li>
                 </ul>
-            }
-            {!props.isAuthenticated() &&
-                <ul className={classNames("layout-topbar-menu lg:flex origin-top", { 'layout-topbar-menu-mobile-active': props.mobileTopbarMenuActive })}>
+            )}
+            {!props.isAuthenticated() && (
+                <ul className={classNames("layout-topbar-menu lg:flex origin-top", { "layout-topbar-menu-mobile-active": props.mobileTopbarMenuActive })}>
                     <li>
-
-                        <Button label="Iniciar Sesión" className="p-button-outlined mr-2 mb-2"  onClick={() => setVisible(true)}/>
+                        <Button label="Iniciar Sesión" className="p-button-outlined mr-2 mb-2" onClick={() => setVisible(true)} />
                     </li>
-                
-                    <li>
-                       
-                        <Button label="Registrarse"  onClick={() => setVisibleRegister(true)} />
 
+                    <li>
+                        <Button label="Registrarse" onClick={() => setVisibleRegister(true)} />
                     </li>
                 </ul>
-            }
+            )}
             <Dialog visible={visible} onHide={() => setVisible(false)}>
                 <LoginComponent></LoginComponent>
             </Dialog>
             <Dialog visible={visibleRegister} onHide={() => setVisibleRegister(false)}>
                 <RegisterComponent></RegisterComponent>
             </Dialog>
-
         </div>
-
     );
-}
+};
