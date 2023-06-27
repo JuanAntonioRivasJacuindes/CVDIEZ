@@ -9,6 +9,21 @@ export class AuthService {
             password: password,
         });
     }
+    getRegister(name, email, password, passwoed_conf) {
+        const config = {
+            headers: { Accept: "application/json" },
+        };
+        return axios.post(
+            endpoint + "/register",
+            {
+                name: name,
+                email: email,
+                password: password,
+                password_confirmation: passwoed_conf,
+            },
+            config
+        );
+    }
     getLogout(AuthToken) {
         const config = {
             headers: { Authorization: `Bearer ${AuthToken}` },
