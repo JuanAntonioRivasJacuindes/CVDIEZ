@@ -5,12 +5,24 @@ import App from "./App";
 //import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from "react-router-dom";
 import ScrollToTop from "./ScrollToTop";
-
+import { LoginPage } from "./pages/Auth/LoginPage";
+const isAuthenticated = () => {
+    if (localStorage.getItem("AuthToken")) {
+        return true;
+    } else {
+        return false;
+    }
+};
+const login = () => {
+    if (isAuthenticated()) {
+        return <App></App>;
+    } else {
+        return <LoginPage></LoginPage>;
+    }
+};
 ReactDOM.render(
     <BrowserRouter>
-        <ScrollToTop>
-            <App></App>
-        </ScrollToTop>
+        <ScrollToTop>{login()}</ScrollToTop>
     </BrowserRouter>,
     document.getElementById("root")
 );

@@ -8,9 +8,9 @@ import { AppFooter } from "./AppFooter";
 import { AppMenu } from "./AppMenu";
 
 import { Dashboard } from "./components/Dashboard";
-
+import CategoryTable from "./components/CategoryCrudComponent";
 import PrimeReact from "primereact/api";
-
+import { LoginPage } from "./pages/Auth/LoginPage";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
@@ -21,15 +21,9 @@ import "./App.scss";
 import BreadCrumbBar from "./components/Partia/BreadCrumbBar";
 import { ButtonDemo } from "./components/ButtonDemo";
 import { MiscDemo } from "./components/MiscDemo";
-import { ForgotPasswordComponent } from "./components/Auth/ForgotPasswordComponent";
-import { ResetPasswordComponent } from "./components/Auth/ResetPasswordComponent";
-const isAuthenticated = () => {
-    if (localStorage.getItem("AuthToken")) {
-        return true;
-    } else {
-        return false;
-    }
-};
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import UserCrudComponent from "./components/UserCrud";
+import RoleTable from "./components/RoleCrud";
 
 const App = () => {
     const [hiddenLayout, setHiddenLayout] = useState(false);
@@ -136,6 +130,16 @@ const App = () => {
                 },
             ],
         },
+        {
+            label: "Usuarios",
+            items: [
+                {
+                    label: "Usuarios",
+                    icon: "pi pi-fw pi-home",
+                    to: "/users",
+                },
+            ],
+        },
     ];
 
     const addClass = (element, className) => {
@@ -158,6 +162,7 @@ const App = () => {
         "p-ripple-disabled": ripple === false,
         "layout-theme-light": layoutColorMode === "light",
     });
+
     const layout = () => {
         if (!hiddenLayout) {
             return (
@@ -165,7 +170,7 @@ const App = () => {
                     <div className="layout-sidebar" onClick={onSidebarClick}>
                         <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
                     </div>
-                    <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} mobileTopbarMenuActive={mobileTopbarMenuActive} isAuthenticated={isAuthenticated} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+                    <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} mobileTopbarMenuActive={mobileTopbarMenuActive} isAuthenticated={true} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
                     <BreadCrumbBar></BreadCrumbBar>
                 </div>
             );
@@ -186,11 +191,13 @@ const App = () => {
             {layout()}
             <div className="layout-main-container">
                 <div className="layout-main">
-                    <Route path="/forgot-password" exact component={ForgotPasswordComponent} />
+                    <Route path="/login" exact component={LoginPage} />
+                    <Route path="/users" exact component={UserCrudComponent} />
+                    <Route path="/roles" exact component={RoleTable} />
+                    <Route path="/categories" exact component={CategoryTable} />
+
                     <Route path="/" exact component={Dashboard} />
-                    <Route path="/button" component={ButtonDemo} />
-                    <Route path="/misc" exact component={MiscDemo} />
-                    <Route path="/reset-password/:token" exact component={ResetPasswordComponent} />
+                    {/* <Route path="/crud" exact component={CategoryCrudComponent} /> */}
                 </div>
             </div>
             {footer()}
