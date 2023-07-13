@@ -5,7 +5,6 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import RoleService from "../service/RoleService";
-
 const RoleTable = () => {
     const [roles, setRoles] = useState([]);
     const [selectedRole, setSelectedRole] = useState(null);
@@ -64,7 +63,7 @@ const RoleTable = () => {
         <div>
             <Button label="Agregar Nuevo" icon="pi pi-plus" onClick={openNew} />
 
-            <DataTable value={roles} selectionMode="single" selection={selectedRole} onSelectionChange={(e) => setSelectedRole(e.value)} onRowSelect={onRoleSelect}>
+            <DataTable value={roles} selection={selectedRole} onSelectionChange={(e) => setSelectedRole(e.value)} onRowSelect={onRoleSelect}>
                 <Column field="name" header="Nombre" sortable></Column>
             </DataTable>
 

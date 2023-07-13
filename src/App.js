@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import { Route, useLocation } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
-
+import { TableDemo } from "./components/TableDemo";
 import { AppTopbar } from "./AppTopbar";
 import { AppFooter } from "./AppFooter";
 import { AppMenu } from "./AppMenu";
@@ -19,16 +19,14 @@ import "./layout/flags/flags.css";
 import "./layout/layout.scss";
 import "./App.scss";
 import BreadCrumbBar from "./components/Partia/BreadCrumbBar";
-import { ButtonDemo } from "./components/ButtonDemo";
-import { MiscDemo } from "./components/MiscDemo";
-import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+
 import UserCrudComponent from "./components/UserCrud";
 import RoleTable from "./components/RoleCrud";
 
 const App = () => {
     const [hiddenLayout, setHiddenLayout] = useState(false);
     const [layoutMode, setLayoutMode] = useState("static");
-    const [layoutColorMode, setLayoutColorMode] = useState("light");
+    const [layoutColorMode, setLayoutColorMode] = useState("theme");
     const [inputStyle, setInputStyle] = useState("outlined");
     const [ripple, setRipple] = useState(true);
     const [staticMenuInactive, setStaticMenuInactive] = useState(false);
@@ -160,7 +158,7 @@ const App = () => {
         "layout-mobile-sidebar-active": mobileMenuActive,
         "p-input-filled": inputStyle === "filled",
         "p-ripple-disabled": ripple === false,
-        "layout-theme-light": layoutColorMode === "light",
+        "layout-theme-light": layoutColorMode === "theme",
     });
 
     const layout = () => {
@@ -193,6 +191,7 @@ const App = () => {
                 <div className="layout-main">
                     <Route path="/login" exact component={LoginPage} />
                     <Route path="/users" exact component={UserCrudComponent} />
+                    <Route path="/table" exact component={TableDemo} />
                     <Route path="/roles" exact component={RoleTable} />
                     <Route path="/categories" exact component={CategoryTable} />
 

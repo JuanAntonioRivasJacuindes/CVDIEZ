@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import classNames from "classnames";
-import { AuthService } from "./service/AuthService";
+import { AuthService } from "../service/AuthService";
 import { Button } from "primereact/button";
 
 export const AppTopbar = (props) => {
